@@ -54,16 +54,18 @@ install_dev_dependencies() {
 }
 
 configure_source() {
-    echo_text "Replace default source files with boilerplat source."
+    echo_text "Replacing default source files with boilerplate source."
     rm App.js
     rm index.js
-    cp ../source/.babelrc .
+    cp ../source/.eslintrc .
     cp ../source/index.js .
     cp -r ../source/src .
+    echo "Source updated."
 
     echo_text "Configure source"
     sed -i.bak "s/RNBoilerPlate/$project_name/g" index.js
     rm index.js.bak # remove backup file
+    echo "Source configured."
 }
 
 read -p 'What is your project name: ' project_name
@@ -74,16 +76,16 @@ then
     then
         echo_text 'Creating React Native project.'
         react-native init $project_name
-        pushd "$project_name"
+        cd "$project_name"
 
         install_dependencies
         install_dev_dependencies
         yarn install # refresh all the dependecies
         configure_source
 
-        popd
         echo_text "Your all sorted with your new project $project_name with boilerplate."
-
+        pwd
+        cd ..
     else
         echo_error 'You dont have react native command line installed.'
     fi
